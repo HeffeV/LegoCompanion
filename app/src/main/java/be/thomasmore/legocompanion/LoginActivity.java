@@ -17,12 +17,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-import java.util.List;
-
-import be.thomasmore.legocompanion.Models.Set;
-import be.thomasmore.legocompanion.Networking.HttpReader;
-import be.thomasmore.legocompanion.Networking.JsonHelper;
-
 public class LoginActivity extends AppCompatActivity {
 
     SignInButton signIn;
@@ -63,24 +57,6 @@ public class LoginActivity extends AppCompatActivity {
                 handleSignInResult(task);
             }
         });
-    }
-
-    private void readSets()
-    {
-        HttpReader httpReader = new HttpReader();
-        httpReader.setOnResultReadyListener(new HttpReader.OnResultReadyListener() {
-            @Override
-            public void resultReady(String result) {
-                JsonHelper jsonHelper = new JsonHelper();
-                List<Set> sets = jsonHelper.getSets(result);
-                String text = " - ";
-                for (int i = 0; i < sets.size(); i++ ) {
-                    text += sets.get(i).getName() + " - ";
-                }
-                //render(text);
-            }
-        });
-        httpReader.execute("https://legocompanionapi.azurewebsites.net/api/Set");
     }
 
     private void signIn() {

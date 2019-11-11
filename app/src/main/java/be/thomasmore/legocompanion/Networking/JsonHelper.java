@@ -17,13 +17,15 @@ public class JsonHelper {
         List<Set> list = new ArrayList<Set>();
 
         try {
-            JSONArray jsonArrayRecipes = new JSONArray(jsonText);
-            for (int i = 0; i < jsonArrayRecipes.length(); i++) {
-                JSONObject jsonObjectRecipe = jsonArrayRecipes.getJSONObject(i);
+            JSONArray jsonArraySet = new JSONArray(jsonText);
+            for (int i = 0; i < jsonArraySet.length(); i++) {
+                JSONObject jsonObjectSet = jsonArraySet.getJSONObject(i);
 
                 Set set = new Set();
-                set.setId(jsonObjectRecipe.getLong("setID"));
-                set.setName(jsonObjectRecipe.getString("setName"));
+                set.setSetID(jsonObjectSet.getLong("setID"));
+                set.setSetName(jsonObjectSet.getString("setName"));
+                JSONArray json = jsonObjectSet.getJSONArray("setParts");
+                Log.d("JsonArray", json.toString());
                 list.add(set);
             }
         } catch (JSONException e) {
