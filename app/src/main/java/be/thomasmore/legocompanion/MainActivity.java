@@ -33,13 +33,20 @@ import be.thomasmore.legocompanion.Fragments.BrowseFragment;
 import be.thomasmore.legocompanion.Fragments.FavoriteFragment;
 import be.thomasmore.legocompanion.Fragments.HomeFragment;
 import be.thomasmore.legocompanion.Fragments.WishlistFragment;
+import be.thomasmore.legocompanion.Models.User;
+import be.thomasmore.legocompanion.Networking.HttpReader;
+import be.thomasmore.legocompanion.Networking.JsonHelper;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    public User user;
 
     GoogleSignInClient mGoogleSignInClient;
     TextView userName,userEmail;
     ImageView userImage;
     private DrawerLayout drawer;
+
+    String fragmentName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -59,20 +66,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-
-        Fragment fragment = new HomeFragment();
-        FragmentManager fm = getSupportFragmentManager();
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.fragment_container, fragment);
-        transaction.commit();
-
-        navigationView.setCheckedItem(R.id.nav_home);
+        fragmentName = getIntent().getStringExtra("Fragment");
+        setFragmentStart(navigationView);
 
         View header = navigationView.getHeaderView(0);
         userName = header.findViewById(R.id.userName);
         userEmail = header.findViewById(R.id.userEmail);
         userImage = header.findViewById(R.id.userIcon);
         GetUser();
+    }
+
+    private void setFragmentStart(NavigationView navigationView){
+        Fragment fragment = new Fragment();
+        FragmentManager fm;
+        FragmentTransaction transaction;
+
+        if(fragmentName==null){
+            fragment = new HomeFragment();
+            navigationView.setCheckedItem(R.id.nav_home);
+        }
+        else if(fragmentName.equals("BrowseFragment")){
+            fragment = new BrowseFragment();
+            navigationView.setCheckedItem(R.id.nav_search);
+            Log.i("FragmentLoad", fragmentName);
+        }
+        fm = getSupportFragmentManager();
+        transaction = fm.beginTransaction();
+        transaction.replace(R.id.fragment_container, fragment);
+        transaction.commit();
     }
 
     @Override
@@ -141,6 +162,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             userEmail.setText(acct.getEmail());
             Glide.with(this).load(acct.getPhotoUrl()).apply(RequestOptions.circleCropTransform()).into(userImage);
             Log.d("Token   ",acct.getIdToken());
+            GetUserData(acct.getId(),acct.getEmail());
         }
     }
 
@@ -153,5 +175,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         finish();
                     }
                 });
+    }
+
+    private void GetUserData(String id,String email){
+        final JsonHelper jsonHelper = new JsonHelper();
+
+        HttpReader httpReader= new HttpReader();
+        httpReader.setOnResultReadyListener(new HttpReader.OnResultReadyListener() {
+            @Override
+            public void resultReady(String result) {
+                Log.d("Result: ",result);
+                user = jsonHelper.getUserData(result);
+                Toast.makeText(MainActivity.this,user.getEmail(),Toast.LENGTH_SHORT).show();
+            }
+        });
+        httpReader.execute("https://legocompanionapi.azurewebsites.net/api/User/UserData?id="+id+"&email="+email);
+
     }
 }

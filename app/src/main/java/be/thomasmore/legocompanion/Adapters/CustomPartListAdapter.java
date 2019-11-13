@@ -15,21 +15,21 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
-import be.thomasmore.legocompanion.Models.Set;
+import be.thomasmore.legocompanion.Models.Part;
 import be.thomasmore.legocompanion.R;
 
-public class CustomSetListAdapter extends ArrayAdapter<Set> {
+public class CustomPartListAdapter extends ArrayAdapter<Part> {
 
     Context mCtx;
     int resource;
-    List<Set> setList;
+    List<Part> partList;
 
-    public CustomSetListAdapter(Context mCtx, int resource, List<Set>setList){
-        super(mCtx,resource,setList);
+    public CustomPartListAdapter(Context mCtx, int resource, List<Part>partList){
+        super(mCtx,resource,partList);
 
         this.mCtx = mCtx;
         this.resource = resource;
-        this.setList=setList;
+        this.partList=partList;
     }
 
     @NonNull
@@ -43,11 +43,11 @@ public class CustomSetListAdapter extends ArrayAdapter<Set> {
         TextView textViewDescription = view.findViewById(R.id.description);
         ImageView imageView = view.findViewById(R.id.imageViewItemList);
 
-        Set set = setList.get(position);
+        Part part = partList.get(position);
 
-        textViewTitle.setText(set.getSetName());
-        textViewDescription.setText(set.getTheme());
-        Glide.with(view).load(set.getImages().get(0).getImageUrl()).into(imageView);
+        textViewTitle.setText(part.getPartName());
+        textViewDescription.setText(Integer.toString(part.getLegoCode()));
+        Glide.with(view).load(part.getImages().get(0).getImageUrl()).into(imageView);
 
         return view;
     }

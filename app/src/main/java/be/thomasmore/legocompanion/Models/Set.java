@@ -9,7 +9,7 @@ public class Set {
     private int age;
     private int pieces;
     private double price;
-    private Theme theme;
+    private String theme;
     private int releaseYear;
 
     private Dimensions dimensions;
@@ -21,7 +21,7 @@ public class Set {
     }
 
     public Set(long _id,String _setName, int _legoCode,int _age,int _pieces,
-               double _price,Theme _theme,int _releaseYear,Dimensions _dimensions,
+               double _price,String _theme,int _releaseYear,Dimensions _dimensions,
                List<SetPart>_setParts,List<Image>_images){
         this.setID = _id;
         this.setName = _setName;
@@ -84,11 +84,11 @@ public class Set {
         this.price = price;
     }
 
-    public Theme getTheme() {
+    public String getTheme() {
         return theme;
     }
 
-    public void setTheme(Theme theme) {
+    public void setTheme(String theme) {
         this.theme = theme;
     }
 
