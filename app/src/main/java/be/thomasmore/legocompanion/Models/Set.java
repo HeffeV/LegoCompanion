@@ -1,5 +1,6 @@
 package be.thomasmore.legocompanion.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Set {
@@ -13,8 +14,8 @@ public class Set {
     private int releaseYear;
 
     private Dimensions dimensions;
-    private List<SetPart> setParts;
-    private List<Image> images;
+    private List<SetPart> setParts = new ArrayList<SetPart>();
+    private List<Image> images=new ArrayList<Image>();
 
     public Set(){
 

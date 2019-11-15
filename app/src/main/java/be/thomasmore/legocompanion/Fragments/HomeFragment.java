@@ -13,6 +13,8 @@ import be.thomasmore.legocompanion.R;
 
 public class HomeFragment extends Fragment {
 
+    View view;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

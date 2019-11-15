@@ -1,5 +1,6 @@
 package be.thomasmore.legocompanion.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -7,12 +8,12 @@ public class User {
     private String googleID;
     private String email;
 
-    private List<Part> favoriteParts;
-    private List<Part> wishlistParts;
-    private List<Set> favoriteSets;
-    private List<Set> wishlistSets;
-    private List<Part> collectionParts;
-    private List<Set> collectionSets;
+    private List<Part> favoriteParts=new ArrayList<Part>();
+    private List<Part> wishlistParts=new ArrayList<Part>();
+    private List<Set> favoriteSets=new ArrayList<Set>();
+    private List<Set> wishlistSets=new ArrayList<Set>();
+    private List<Part> collectionParts=new ArrayList<Part>();
+    private List<Set> collectionSets=new ArrayList<Set>();
 
     public User(){
 

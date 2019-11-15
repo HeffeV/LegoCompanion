@@ -1,20 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent" android:layout_height="fill_parent"
     android:fillViewport="true"
     android:background="@android:color/holo_blue_bright">
 
 
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/TabLayoutBrowse"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary">
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/TabSetsBrowse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Sets" />
+
+        <com.google.android.material.tabs.TabItem
+            android:id="@+id/TabPartsBrowse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Parts" />
+
+    </com.google.android.material.tabs.TabLayout>
 
     <ListView
-        android:id="@+id/listViewSets"
-        android:layout_width="match_parent"
+        android:id="@+id/listViewBrowse"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:dividerHeight="1dp"
+        android:layout_below="@id/TabLayoutBrowse">
+    </ListView>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabFilterBrowse"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:dividerHeight="1dp" />
-    <ListView
-        android:id="@+id/listViewParts"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/listViewSets"
-        android:dividerHeight="1dp" />
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_search"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="20dp"/>
 </RelativeLayout>

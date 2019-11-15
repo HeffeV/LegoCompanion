@@ -12,6 +12,9 @@ import android.widget.ListView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.tabs.TabLayout;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,20 +29,52 @@ import be.thomasmore.legocompanion.R;
 
 public class BrowseFragment extends Fragment {
 
-    ListView listViewSets,listViewParts;
+    ListView listView;
     ArrayList<String> Sets;
     View view;
+    FloatingActionButton fab;
+    TabLayout tabLayout;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d("Fragment:   ","Browse");
         view = inflater.inflate(R.layout.fragment_browse, container, false);
-        listViewSets = (ListView)view.findViewById(R.id.listViewSets);
-        listViewParts=(ListView)view.findViewById(R.id.listViewParts);
+        listView = (ListView)view.findViewById(R.id.listViewBrowse);
+        tabLayout = (TabLayout)view.findViewById(R.id.TabLayoutBrowse);
+        fab = (FloatingActionButton)view.findViewById(R.id.fabFilterBrowse);
+        SetUpViews();
         readSets();
-        readParts();
         return view;
+    }
+
+    private void SetUpViews(){
+        tabLayout.addOnTabSelectedListener(new TabLayout.BaseOnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if(tab.getPosition()==0){
+                    readSets();
+                }
+                else{
+                    readParts();
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+                if(tab.getPosition()==0){
+                    readSets();
+                }
+                else{
+                    readParts();
+                }
+            }
+        });
     }
 
     public void readSets()
@@ -57,9 +92,9 @@ public class BrowseFragment extends Fragment {
 
                 CustomSetListAdapter adapter = new CustomSetListAdapter(getActivity(),R.layout.list_item,Sets);
 
-                listViewSets.setAdapter(adapter);
+                listView.setAdapter(adapter);
 
-                listViewSets.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Intent intent = new Intent(getActivity(), BrowseDetailsActivity.class);
@@ -90,9 +125,9 @@ public class BrowseFragment extends Fragment {
 
                 CustomPartListAdapter adapter = new CustomPartListAdapter(getActivity(),R.layout.list_item,Parts);
 
-                listViewParts.setAdapter(adapter);
+                listView.setAdapter(adapter);
 
-                listViewParts.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                         Intent intent = new Intent(getActivity(), BrowseDetailsActivity.class);
