@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
 import be.thomasmore.legocompanion.Fragments.BrowseFragment;
+import be.thomasmore.legocompanion.Fragments.CollectionFragment;
 import be.thomasmore.legocompanion.Fragments.FavoriteFragment;
 import be.thomasmore.legocompanion.Fragments.HomeFragment;
 import be.thomasmore.legocompanion.Fragments.WishlistFragment;
@@ -131,6 +132,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 transaction.replace(R.id.fragment_container, fragment);
                 transaction.commit();
                 break;
+            case R.id.nav_collection:
+                fragment = new CollectionFragment();
+                fm = getSupportFragmentManager();
+                transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.commit();
+                break;
             case R.id.nav_logout:
                 signOut();
                 break;
@@ -162,7 +170,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             userName.setText(acct.getDisplayName());
             userEmail.setText(acct.getEmail());
             Glide.with(this).load(acct.getPhotoUrl()).apply(RequestOptions.circleCropTransform()).into(userImage);
-            Log.d("Token   ",acct.getIdToken());
             GetUserData(acct.getId(),acct.getEmail());
         }
     }
@@ -185,12 +192,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         httpReader.setOnResultReadyListener(new HttpReader.OnResultReadyListener() {
             @Override
             public void resultReady(String result) {
-                Log.d("Result: ",result);
                 user = jsonHelper.getUserData(result);
                 Toast.makeText(MainActivity.this,user.getEmail(),Toast.LENGTH_SHORT).show();
             }
         });
-        httpReader.execute("https://legocompanionapi.azurewebsites.net/api/User/UserData?id="+id+"&email="+email);
+        httpReader.execute(getString(R.string.server)+"/api/User/UserData?id="+id+"&email="+email);
 
     }
 }

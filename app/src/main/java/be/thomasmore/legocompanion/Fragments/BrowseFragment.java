@@ -21,8 +21,10 @@ import java.util.List;
 import be.thomasmore.legocompanion.Adapters.CustomPartListAdapter;
 import be.thomasmore.legocompanion.Adapters.CustomSetListAdapter;
 import be.thomasmore.legocompanion.BrowseDetailsActivity;
+import be.thomasmore.legocompanion.MainActivity;
 import be.thomasmore.legocompanion.Models.Part;
 import be.thomasmore.legocompanion.Models.Set;
+import be.thomasmore.legocompanion.Models.User;
 import be.thomasmore.legocompanion.Networking.HttpReader;
 import be.thomasmore.legocompanion.Networking.JsonHelper;
 import be.thomasmore.legocompanion.R;
@@ -34,12 +36,15 @@ public class BrowseFragment extends Fragment {
     View view;
     FloatingActionButton fab;
     TabLayout tabLayout;
+    User user;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d("Fragment:   ","Browse");
         view = inflater.inflate(R.layout.fragment_browse, container, false);
+        MainActivity mainActivity = (MainActivity)getActivity();
+        user=mainActivity.user;
         listView = (ListView)view.findViewById(R.id.listViewBrowse);
         tabLayout = (TabLayout)view.findViewById(R.id.TabLayoutBrowse);
         fab = (FloatingActionButton)view.findViewById(R.id.fabFilterBrowse);
@@ -100,12 +105,13 @@ public class BrowseFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), BrowseDetailsActivity.class);
                         intent.putExtra("ItemID", Long.toString(sets.get(i).getSetID()));
                         intent.putExtra("Set", true);
+                        intent.putExtra("UserID", Long.toString(user.getUserID()));
                         startActivity(intent);
                     }
                 });
             }
         });
-        httpReader.execute("https://legocompanionapi.azurewebsites.net/api/Set/SetWithParts");
+        httpReader.execute(getString(R.string.server)+"/api/Set/SetWithParts");
 
     }
 
@@ -133,12 +139,13 @@ public class BrowseFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), BrowseDetailsActivity.class);
                         intent.putExtra("ItemID", Long.toString(parts.get(i).getPartID()));
                         intent.putExtra("Set", false);
+                        intent.putExtra("UserID", Long.toString(user.getUserID()));
                         startActivity(intent);
                     }
                 });
             }
         });
-        httpReader.execute("https://legocompanionapi.azurewebsites.net/api/Part/PartsWithSets");
+        httpReader.execute(getString(R.string.server)+"/api/Part/PartsWithSets");
 
     }
 }

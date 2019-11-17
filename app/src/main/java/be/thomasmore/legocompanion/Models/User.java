@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    private long user;
+    private long userID;
     private String googleID;
     private String email;
 
@@ -19,8 +19,8 @@ public class User {
 
     }
 
-    public User(long user, String googleID, String email, List<Part> favoriteParts, List<Part> wishlistParts, List<Set> favoriteSets, List<Set> wishlistSets, List<Part> collectionParts, List<Set> collectionSets) {
-        this.user = user;
+    public User(long userID, String googleID, String email, List<Part> favoriteParts, List<Part> wishlistParts, List<Set> favoriteSets, List<Set> wishlistSets, List<Part> collectionParts, List<Set> collectionSets) {
+        this.userID = userID;
         this.googleID = googleID;
         this.email = email;
         this.favoriteParts = favoriteParts;
@@ -31,12 +31,12 @@ public class User {
         this.collectionSets = collectionSets;
     }
 
-    public long getUser() {
-        return user;
+    public long getUserID() {
+        return userID;
     }
 
-    public void setUser(long user) {
-        this.user = user;
+    public void setUserID(long userID) {
+        this.userID = userID;
     }
 
     public String getGoogleID() {
@@ -102,4 +102,6 @@ public class User {
     public void setCollectionSets(List<Set> collectionSets) {
         this.collectionSets = collectionSets;
     }
+
+
 }

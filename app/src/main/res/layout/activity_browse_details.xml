@@ -20,27 +20,31 @@
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-        <TextView
-            android:id="@+id/textViewDetailsTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextView"
-            tools:layout_editor_absoluteX="141dp"
-            tools:layout_editor_absoluteY="162dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
 
-        <ImageView
-            android:id="@+id/imageViewDetails"
-            android:layout_width="wrap_content"
+                <ImageView
+                    android:id="@+id/imageViewDetails"
+                    android:layout_width="250dp"
+                    android:layout_height="250dp"
+                    tools:srcCompat="@tools:sample/avatars[2]" />
+
+        <Button
+            android:id="@+id/buttonAddWishList"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:layout_editor_absoluteX="141dp"
-            tools:layout_editor_absoluteY="204dp"
-            tools:srcCompat="@tools:sample/avatars[2]"
-            app:layout_constraintBottom_toTopOf="@id/textViewDetailsTitle"
-            app:layout_constraintLeft_toLeftOf="@id/textViewDetailsTitle"/>
+            android:text="Wishlist" />
+
+        <Button
+            android:id="@+id/buttonAddFavorite"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Favorite" />
+
+        <Button
+            android:id="@+id/buttonAddCollection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Collection" />
+
 
     </LinearLayout>
 
