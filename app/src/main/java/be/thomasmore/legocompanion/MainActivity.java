@@ -2,7 +2,6 @@ package be.thomasmore.legocompanion;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -83,15 +82,41 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentManager fm;
         FragmentTransaction transaction;
 
-        if(fragmentName==null){
+
+        if(fragmentName==null) {
             fragment = new HomeFragment();
             navigationView.setCheckedItem(R.id.nav_home);
         }
-        else if(fragmentName.equals("BrowseFragment")){
-            fragment = new BrowseFragment();
-            navigationView.setCheckedItem(R.id.nav_search);
-            Log.i("FragmentLoad", fragmentName);
+        else {
+            switch (fragmentName) {
+                case "FavoriteFragment":
+                    fragment = new FavoriteFragment();
+                    navigationView.setCheckedItem(R.id.nav_favorite);
+                    break;
+                case "WishlistFragment":
+                    fragment = new WishlistFragment();
+                    navigationView.setCheckedItem(R.id.nav_wishlist);
+                    break;
+                case "CollectionFragment":
+                    fragment = new CollectionFragment();
+                    navigationView.setCheckedItem(R.id.nav_collection);
+                    break;
+                case "BrowseFragment":
+                    fragment = new BrowseFragment();
+                    navigationView.setCheckedItem(R.id.nav_search);
+                    break;
+                default:
+                    fragment = new HomeFragment();
+                    navigationView.setCheckedItem(R.id.nav_home);
+                    break;
+            }
         }
+
+        /*
+        }
+        else if(fragmentName.equals("BrowseFragment")){
+
+        }*/
         fm = getSupportFragmentManager();
         transaction = fm.beginTransaction();
         transaction.replace(R.id.fragment_container, fragment);

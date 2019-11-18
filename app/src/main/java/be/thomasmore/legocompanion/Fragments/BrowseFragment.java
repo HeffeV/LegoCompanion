@@ -20,7 +20,7 @@ import java.util.List;
 
 import be.thomasmore.legocompanion.Adapters.CustomPartListAdapter;
 import be.thomasmore.legocompanion.Adapters.CustomSetListAdapter;
-import be.thomasmore.legocompanion.BrowseDetailsActivity;
+import be.thomasmore.legocompanion.ItemDetailsActivity;
 import be.thomasmore.legocompanion.MainActivity;
 import be.thomasmore.legocompanion.Models.Part;
 import be.thomasmore.legocompanion.Models.Set;
@@ -101,9 +101,10 @@ public class BrowseFragment extends Fragment {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(getActivity(), BrowseDetailsActivity.class);
+                        Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
                         intent.putExtra("ItemID", Long.toString(sets.get(i).getSetID()));
                         intent.putExtra("Set", true);
+                        intent.putExtra("FragmentDetails","browse");
                         startActivity(intent);
                     }
                 });
@@ -134,9 +135,10 @@ public class BrowseFragment extends Fragment {
                 listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                        Intent intent = new Intent(getActivity(), BrowseDetailsActivity.class);
+                        Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
                         intent.putExtra("ItemID", Long.toString(parts.get(i).getPartID()));
                         intent.putExtra("Set", false);
+                        intent.putExtra("FragmentDetails","browse");
                         startActivity(intent);
                     }
                 });

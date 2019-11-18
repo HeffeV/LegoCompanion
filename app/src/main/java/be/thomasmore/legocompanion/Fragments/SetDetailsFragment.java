@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import be.thomasmore.legocompanion.BrowseDetailsActivity;
+import be.thomasmore.legocompanion.ItemDetailsActivity;
 import be.thomasmore.legocompanion.Models.Set;
 import be.thomasmore.legocompanion.R;
 
@@ -23,7 +23,7 @@ public class SetDetailsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d("Fragment:   ","SetDetails");
-        set = BrowseDetailsActivity.GetSet();
+        set = ItemDetailsActivity.GetSet();
 
         View view = inflater.inflate(R.layout.fragment_setdetails, container, false);
 

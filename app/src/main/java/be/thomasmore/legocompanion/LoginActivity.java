@@ -80,9 +80,6 @@ public class LoginActivity extends AppCompatActivity {
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            String idToken = account.getIdToken();
-            //ValidateToken(idToken);
-            // Signed in successfully, show authenticated UI.
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
             startActivity(intent);
         } catch (ApiException e) {

@@ -17,15 +17,17 @@ import com.bumptech.glide.Glide;
 
 import be.thomasmore.legocompanion.Fragments.PartDetailsFragment;
 import be.thomasmore.legocompanion.Fragments.SetDetailsFragment;
+import be.thomasmore.legocompanion.Models.DatabaseHelper;
+import be.thomasmore.legocompanion.Models.Item;
 import be.thomasmore.legocompanion.Models.Part;
 import be.thomasmore.legocompanion.Models.Set;
 import be.thomasmore.legocompanion.Models.User;
 import be.thomasmore.legocompanion.Networking.HttpReader;
 import be.thomasmore.legocompanion.Networking.JsonHelper;
 
-public class BrowseDetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class ItemDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
-    User user;
+    private static User user;
     String userID;
     Boolean setBool,inWishlist = false,inCollection=false,inFavorites=false;
     private static Set set;
@@ -35,6 +37,10 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
     Fragment fragment;
     FragmentManager fm;
     FragmentTransaction transaction;
+    String fragmentName;
+    Intent intent;
+
+    private DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,23 +50,45 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
         Toolbar toolbar = findViewById(R.id.toolbarSetDetails);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(BrowseDetailsActivity.this, MainActivity.class);
-                intent.putExtra("Fragment", "BrowseFragment");
-                startActivity(intent);
-            }
-        });
 
         buttonFavorite = findViewById(R.id.buttonAddFavorite);
         buttonWishlist = findViewById(R.id.buttonAddWishList);
         buttonCollection = findViewById(R.id.buttonAddCollection);
 
+        intent = new Intent(ItemDetailsActivity.this, MainActivity.class);
+
         user = MainActivity.getUser();
 
+        fragmentName = getIntent().getStringExtra("FragmentDetails");
         itemID = getIntent().getStringExtra("ItemID");
         setBool = getIntent().getBooleanExtra("Set",true);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                switch(fragmentName){
+                    case "favorite":
+                        intent.putExtra("Fragment", "FavoriteFragment");
+                        startActivity(intent);
+                        break;
+                    case "wishlist":
+                        intent.putExtra("Fragment", "WishlistFragment");
+                        startActivity(intent);
+                        break;
+                    case "collection":
+                        intent.putExtra("Fragment", "CollectionFragment");
+                        startActivity(intent);
+                        break;
+                    case "browse":
+                        intent.putExtra("Fragment", "BrowseFragment");
+                        startActivity(intent);
+                        break;
+                    default:
+                        startActivity(intent);
+                        break;
+                }
+            }
+        });
 
         if(setBool){
             getSet(itemID);
@@ -68,6 +96,8 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
         else{
             getPart(itemID);
         }
+
+        db = new DatabaseHelper(this);
     }
 
     private void InitializeButtons(){
@@ -136,13 +166,20 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
                 //textView.setText(set.getSetName());
 
                 ImageView imageView = (ImageView)findViewById(R.id.imageViewDetails);
-                Glide.with(BrowseDetailsActivity.this).load(set.getImages().get(0).getImageUrl()).into(imageView);
+                Glide.with(ItemDetailsActivity.this).load(set.getImages().get(0).getImageUrl()).into(imageView);
+
                 InitializeButtons();
+
                 fragment = new SetDetailsFragment();
                 fm = getSupportFragmentManager();
                 transaction = fm.beginTransaction();
                 transaction.replace(R.id.fragment_container_detail, fragment);
                 transaction.commit();
+
+                Item item = new Item(set.getSetID(),0,set.getSetName(),set.getTheme(),set.getImages().get(0).getImageUrl());
+
+                db.AddItem(item);
+
             }
         });
         httpReader.execute(getString(R.string.server)+"/api/Set/"+itemID);
@@ -161,14 +198,19 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
                 //textView.setText(part.getPartName());
 
                 ImageView imageView = (ImageView)findViewById(R.id.imageViewDetails);
-                Glide.with(BrowseDetailsActivity.this).load(part.getImages().get(0).getImageUrl()).into(imageView);
+                Glide.with(ItemDetailsActivity.this).load(part.getImages().get(0).getImageUrl()).into(imageView);
+
                 InitializeButtons();
+
                 fragment = new PartDetailsFragment();
                 fm = getSupportFragmentManager();
                 transaction = fm.beginTransaction();
                 transaction.replace(R.id.fragment_container_detail, fragment);
                 transaction.commit();
 
+                Item item = new Item(part.getPartID(),1,part.getPartName(),String.valueOf(part.getLegoCode()),part.getImages().get(0).getImageUrl());
+
+                db.AddItem(item);
             }
         });
         httpReader.execute(getString(R.string.server)+"/api/Part/"+itemID);
@@ -263,13 +305,13 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
 
                     if(!inWishlist){
                         AddSetToX(itemID,Long.toString(user.getUserID()),1);
-                        Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" added to your wishlist!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this,set.getSetName() +" added to your wishlist!",Toast.LENGTH_SHORT).show();
                         buttonWishlist.setText("Remove from wishlist");
                         inWishlist=true;
                     }
                     else{
                         RemoveSetFromX(itemID,Long.toString(user.getUserID()),1);
-                        Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" removed from your wishlist!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this,set.getSetName() +" removed from your wishlist!",Toast.LENGTH_SHORT).show();
                         buttonWishlist.setText("Add to wishlist");
                         inWishlist=false;
                     }
@@ -277,13 +319,13 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
                 else{
                     if(!inWishlist){
                         AddPartToX(itemID,Long.toString(user.getUserID()),1);
-                        Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" added to your wishlist!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this,part.getPartName() +" added to your wishlist!",Toast.LENGTH_SHORT).show();
                         buttonWishlist.setText("Remove from wishlist");
                         inWishlist=true;
                     }
                     else{
                         RemovePartFromX(itemID,Long.toString(user.getUserID()),1);
-                        Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" removed from your wishlist!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this,part.getPartName() +" removed from your wishlist!",Toast.LENGTH_SHORT).show();
                         buttonWishlist.setText("Add to wishlist");
                         inWishlist=false;
                     }
@@ -293,13 +335,13 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
                 if(setBool){
                     if(!inFavorites){
                         AddSetToX(itemID,Long.toString(user.getUserID()),2);
-                        Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" added to your favorites!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this,set.getSetName() +" added to your favorites!",Toast.LENGTH_SHORT).show();
                         buttonFavorite.setText("Remove from favorites");
                         inFavorites=true;
                     }
                     else{
                         RemoveSetFromX(itemID,Long.toString(user.getUserID()),2);
-                        Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" removed from your favorites!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this,set.getSetName() +" removed from your favorites!",Toast.LENGTH_SHORT).show();
                         buttonFavorite.setText("Add to favorites");
                         inFavorites=false;
                     }
@@ -307,13 +349,13 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
                 else{
                     if(!inFavorites){
                         AddPartToX(itemID,Long.toString(user.getUserID()),2);
-                        Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" added to your favorites!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this,part.getPartName() +" added to your favorites!",Toast.LENGTH_SHORT).show();
                         buttonFavorite.setText("Remove from favorites");
                         inFavorites=true;
                     }
                     else{
                         RemovePartFromX(itemID,Long.toString(user.getUserID()),2);
-                        Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" removed from your favorites!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this,part.getPartName() +" removed from your favorites!",Toast.LENGTH_SHORT).show();
                         buttonFavorite.setText("Add to favorites");
                         inFavorites=false;
                     }
@@ -323,13 +365,13 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
                 if(setBool){
                     if(!inCollection){
                         AddSetToX(itemID,Long.toString(user.getUserID()),3);
-                        Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" added to your collection!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this,set.getSetName() +" added to your collection!",Toast.LENGTH_SHORT).show();
                         buttonCollection.setText("Remove from collection");
                         inCollection=true;
                     }
                     else{
                         RemoveSetFromX(itemID,Long.toString(user.getUserID()),3);
-                        Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" removed from your collection!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this,set.getSetName() +" removed from your collection!",Toast.LENGTH_SHORT).show();
                         buttonCollection.setText("Add to collection");
                         inCollection=false;
                     }
@@ -337,13 +379,13 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
                 else{
                     if(!inCollection){
                         AddPartToX(itemID,Long.toString(user.getUserID()),3);
-                        Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" added to your collection!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this,part.getPartName() +" added to your collection!",Toast.LENGTH_SHORT).show();
                         buttonCollection.setText("Remove from collection");
                         inCollection=true;
                     }
                     else{
                         RemovePartFromX(itemID,Long.toString(user.getUserID()),3);
-                        Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" removed from your collection!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ItemDetailsActivity.this,part.getPartName() +" removed from your collection!",Toast.LENGTH_SHORT).show();
                         buttonCollection.setText("Add to collection");
                         inCollection=false;
                     }
@@ -358,5 +400,9 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
 
     public static Part GetPart(){
         return part;
+    }
+
+    public static User GetUser(){
+        return user;
     }
 }
