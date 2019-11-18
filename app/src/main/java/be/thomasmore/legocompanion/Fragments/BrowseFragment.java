@@ -43,8 +43,7 @@ public class BrowseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d("Fragment:   ","Browse");
         view = inflater.inflate(R.layout.fragment_browse, container, false);
-        MainActivity mainActivity = (MainActivity)getActivity();
-        user=mainActivity.user;
+        user=MainActivity.getUser();
         listView = (ListView)view.findViewById(R.id.listViewBrowse);
         tabLayout = (TabLayout)view.findViewById(R.id.TabLayoutBrowse);
         fab = (FloatingActionButton)view.findViewById(R.id.fabFilterBrowse);
@@ -105,7 +104,6 @@ public class BrowseFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), BrowseDetailsActivity.class);
                         intent.putExtra("ItemID", Long.toString(sets.get(i).getSetID()));
                         intent.putExtra("Set", true);
-                        intent.putExtra("UserID", Long.toString(user.getUserID()));
                         startActivity(intent);
                     }
                 });
@@ -139,7 +137,6 @@ public class BrowseFragment extends Fragment {
                         Intent intent = new Intent(getActivity(), BrowseDetailsActivity.class);
                         intent.putExtra("ItemID", Long.toString(parts.get(i).getPartID()));
                         intent.putExtra("Set", false);
-                        intent.putExtra("UserID", Long.toString(user.getUserID()));
                         startActivity(intent);
                     }
                 });

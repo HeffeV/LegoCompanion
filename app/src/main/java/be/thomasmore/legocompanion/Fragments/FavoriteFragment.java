@@ -29,9 +29,8 @@ public class FavoriteFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d("Fragment:   ","Favorite");
-        MainActivity mainActivity = (MainActivity)getActivity();
         view = inflater.inflate(R.layout.fragment_favorite, container, false);
-        user=mainActivity.user;
+        user=MainActivity.getUser();
         listView = (ListView)view.findViewById(R.id.listViewFavorites);
         tabLayout = (TabLayout)view.findViewById(R.id.TabLayoutFavorites);
         SetUpViews();

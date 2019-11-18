@@ -20,13 +20,13 @@ import be.thomasmore.legocompanion.Networking.JsonHelper;
 
 public class BrowseDetailsActivity extends AppCompatActivity implements View.OnClickListener {
 
+    User user;
     String userID;
-    Boolean setBool;
+    Boolean setBool,inWishlist = false,inCollection=false,inFavorites=false;
     Set set;
     Part part;
     String itemID;
     Button buttonFavorite,buttonWishlist,buttonCollection;
-    MainActivity mainActivity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +49,8 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
         buttonWishlist = findViewById(R.id.buttonAddWishList);
         buttonCollection = findViewById(R.id.buttonAddCollection);
 
-        userID = getIntent().getStringExtra("UserID");
+        user = MainActivity.getUser();
+
         itemID = getIntent().getStringExtra("ItemID");
         setBool = getIntent().getBooleanExtra("Set",true);
 
@@ -59,13 +60,59 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
         else{
             getPart(itemID);
         }
-        InitializeButtons();
     }
 
     private void InitializeButtons(){
        buttonFavorite.setOnClickListener(this);
        buttonCollection.setOnClickListener(this);
        buttonWishlist.setOnClickListener(this);
+
+       if(setBool){
+           for (int i=0; i<user.getWishlistSets().size(); i++) {
+               if(user.getWishlistSets().get(i).getSetID()==set.getSetID()){
+                   inWishlist = true;
+               }
+           }
+           for (int i=0; i<user.getCollectionSets().size(); i++) {
+               if(user.getCollectionSets().get(i).getSetID()==set.getSetID()){
+                   inCollection = true;
+               }
+           }
+           for (int i=0; i<user.getFavoriteSets().size(); i++) {
+               if(user.getFavoriteSets().get(i).getSetID()==set.getSetID()){
+                   inFavorites = true;
+               }
+           }
+       }
+       else
+       {
+           for (int i=0; i<user.getWishlistParts().size(); i++) {
+               if(user.getWishlistParts().get(i).getPartID()==part.getPartID()){
+                   inWishlist = true;
+               }
+           }
+           for (int i=0; i<user.getCollectionParts().size(); i++) {
+               if(user.getCollectionParts().get(i).getPartID()==part.getPartID()){
+                   inCollection = true;
+               }
+           }
+           for (int i=0; i<user.getFavoriteParts().size(); i++) {
+               if(user.getFavoriteParts().get(i).getPartID()==part.getPartID()){
+                   inFavorites = true;
+               }
+           }
+       }
+
+        if(inWishlist){
+            buttonWishlist.setText("Remove from wishlist");
+        }
+        if(inFavorites){
+            buttonFavorite.setText("Remove from favorites");
+        }
+        if(inCollection){
+            buttonCollection.setText("Remove from collection");
+        }
+
     }
 
     private void getSet(String itemID){
@@ -82,6 +129,7 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
 
                 ImageView imageView = (ImageView)findViewById(R.id.imageViewDetails);
                 Glide.with(BrowseDetailsActivity.this).load(set.getImages().get(0).getImageUrl()).into(imageView);
+                InitializeButtons();
             }
         });
         httpReader.execute(getString(R.string.server)+"/api/Set/"+itemID);
@@ -101,6 +149,7 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
 
                 ImageView imageView = (ImageView)findViewById(R.id.imageViewDetails);
                 Glide.with(BrowseDetailsActivity.this).load(part.getImages().get(0).getImageUrl()).into(imageView);
+                InitializeButtons();
             }
         });
         httpReader.execute(getString(R.string.server)+"/api/Part/"+itemID);
@@ -112,7 +161,7 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
             @Override
             public void resultReady(String result) {
                 JsonHelper jsonHelper = new JsonHelper();
-                final User user = jsonHelper.getUserData(result);
+                user = jsonHelper.getUserData(result);
             }
         });
         if(type==1){
@@ -132,7 +181,7 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
             @Override
             public void resultReady(String result) {
                 JsonHelper jsonHelper = new JsonHelper();
-                final User user = jsonHelper.getUserData(result);
+                user = jsonHelper.getUserData(result);
             }
         });
         if(type==1){
@@ -146,37 +195,139 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
         }
     }
 
+    private void RemoveSetFromX(String itemID, String userID,int type){
+        HttpReader httpReader = new HttpReader();
+        httpReader.setOnResultReadyListener(new HttpReader.OnResultReadyListener() {
+            @Override
+            public void resultReady(String result) {
+                JsonHelper jsonHelper = new JsonHelper();
+                user = jsonHelper.getUserData(result);
+            }
+        });
+        if(type==1){
+            httpReader.execute(getString(R.string.server)+"/api/Set/RemoveSetFromWishlist?userId="+userID+"&setId="+itemID);
+        }
+        else if(type==2){
+            httpReader.execute(getString(R.string.server)+"/api/Set/RemoveSetFromFavorites?userId="+userID+"&setId="+itemID);
+        }
+        else if(type==3){
+            httpReader.execute(getString(R.string.server)+"/api/Set/RemoveSetFromCollection?userId="+userID+"&setId="+itemID);
+        }
+    }
+
+    private void RemovePartFromX(String itemID, String userID,int type){
+        HttpReader httpReader = new HttpReader();
+        httpReader.setOnResultReadyListener(new HttpReader.OnResultReadyListener() {
+            @Override
+            public void resultReady(String result) {
+                JsonHelper jsonHelper = new JsonHelper();
+                user = jsonHelper.getUserData(result);
+            }
+        });
+        if(type==1){
+            httpReader.execute(getString(R.string.server)+"/api/Part/RemovePartFromWishlist?userId="+userID+"&partId="+itemID);
+        }
+        else if(type==2){
+            httpReader.execute(getString(R.string.server)+"/api/Part/RemovePartFromFavorites?userId="+userID+"&partId="+itemID);
+        }
+        else if(type==3){
+            httpReader.execute(getString(R.string.server)+"/api/Part/RemovePartFromCollection?userId="+userID+"&partId="+itemID);
+        }
+    }
+
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.buttonAddWishList:
                 if(setBool){
-                    AddSetToX(itemID,userID,1);
-                    Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" added to your wishlist!",Toast.LENGTH_SHORT).show();
+
+                    if(!inWishlist){
+                        AddSetToX(itemID,Long.toString(user.getUserID()),1);
+                        Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" added to your wishlist!",Toast.LENGTH_SHORT).show();
+                        buttonWishlist.setText("Remove from wishlist");
+                        inWishlist=true;
+                    }
+                    else{
+                        RemoveSetFromX(itemID,Long.toString(user.getUserID()),1);
+                        Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" removed from your wishlist!",Toast.LENGTH_SHORT).show();
+                        buttonWishlist.setText("Add to wishlist");
+                        inWishlist=false;
+                    }
                 }
                 else{
-                    AddPartToX(itemID,userID,1);
-                    Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" added to your wishlist!",Toast.LENGTH_SHORT).show();
+                    if(!inWishlist){
+                        AddPartToX(itemID,Long.toString(user.getUserID()),1);
+                        Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" added to your wishlist!",Toast.LENGTH_SHORT).show();
+                        buttonWishlist.setText("Remove from wishlist");
+                        inWishlist=true;
+                    }
+                    else{
+                        RemovePartFromX(itemID,Long.toString(user.getUserID()),1);
+                        Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" removed from your wishlist!",Toast.LENGTH_SHORT).show();
+                        buttonWishlist.setText("Add to wishlist");
+                        inWishlist=false;
+                    }
                 }
                 break;
             case R.id.buttonAddFavorite:
                 if(setBool){
-                    AddSetToX(itemID,userID,2);
-                    Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" added to your favorites!",Toast.LENGTH_SHORT).show();
+                    if(!inFavorites){
+                        AddSetToX(itemID,Long.toString(user.getUserID()),2);
+                        Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" added to your favorites!",Toast.LENGTH_SHORT).show();
+                        buttonFavorite.setText("Remove from favorites");
+                        inFavorites=true;
+                    }
+                    else{
+                        RemoveSetFromX(itemID,Long.toString(user.getUserID()),2);
+                        Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" removed from your favorites!",Toast.LENGTH_SHORT).show();
+                        buttonFavorite.setText("Add to favorites");
+                        inFavorites=false;
+                    }
                 }
                 else{
-                    AddPartToX(itemID,userID,2);
-                    Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" added to your wishlist!",Toast.LENGTH_SHORT).show();
+                    if(!inFavorites){
+                        AddPartToX(itemID,Long.toString(user.getUserID()),2);
+                        Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" added to your favorites!",Toast.LENGTH_SHORT).show();
+                        buttonFavorite.setText("Remove from favorites");
+                        inFavorites=true;
+                    }
+                    else{
+                        RemovePartFromX(itemID,Long.toString(user.getUserID()),2);
+                        Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" removed from your favorites!",Toast.LENGTH_SHORT).show();
+                        buttonFavorite.setText("Add to favorites");
+                        inFavorites=false;
+                    }
                 }
                 break;
             case R.id.buttonAddCollection:
                 if(setBool){
-                    AddSetToX(itemID,userID,3);
-                    Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" added to your collection!",Toast.LENGTH_SHORT).show();
+                    if(!inCollection){
+                        AddSetToX(itemID,Long.toString(user.getUserID()),3);
+                        Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" added to your collection!",Toast.LENGTH_SHORT).show();
+                        buttonCollection.setText("Remove from collection");
+                        inCollection=true;
+                    }
+                    else{
+                        RemoveSetFromX(itemID,Long.toString(user.getUserID()),3);
+                        Toast.makeText(BrowseDetailsActivity.this,set.getSetName() +" removed from your collection!",Toast.LENGTH_SHORT).show();
+                        buttonCollection.setText("Add to collection");
+                        inCollection=false;
+                    }
                 }
                 else{
-                    AddPartToX(itemID,userID,3);
-                    Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" added to your wishlist!",Toast.LENGTH_SHORT).show();
+                    if(!inCollection){
+                        AddPartToX(itemID,Long.toString(user.getUserID()),3);
+                        Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" added to your collection!",Toast.LENGTH_SHORT).show();
+                        buttonCollection.setText("Remove from collection");
+                        inCollection=true;
+                    }
+                    else{
+                        RemovePartFromX(itemID,Long.toString(user.getUserID()),3);
+                        Toast.makeText(BrowseDetailsActivity.this,part.getPartName() +" removed from your collection!",Toast.LENGTH_SHORT).show();
+                        buttonCollection.setText("Add to collection");
+                        inCollection=false;
+                    }
                 }
                 break;
         }

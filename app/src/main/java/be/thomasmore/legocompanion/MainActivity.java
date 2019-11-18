@@ -40,7 +40,7 @@ import be.thomasmore.legocompanion.Networking.JsonHelper;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    public User user;
+    private static User user;
 
     GoogleSignInClient mGoogleSignInClient;
     TextView userName,userEmail;
@@ -193,10 +193,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void resultReady(String result) {
                 user = jsonHelper.getUserData(result);
-                Toast.makeText(MainActivity.this,user.getEmail(),Toast.LENGTH_SHORT).show();
             }
         });
         httpReader.execute(getString(R.string.server)+"/api/User/UserData?id="+id+"&email="+email);
+    }
 
+    public static User getUser(){
+        return user;
     }
 }

@@ -29,8 +29,7 @@ public class WishlistFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d("Fragment:   ","Wishlist");
-        MainActivity mainActivity = (MainActivity)getActivity();
-        user=mainActivity.user;
+        user=MainActivity.getUser();
         view = inflater.inflate(R.layout.fragment_wishlist, container, false);
         listView = (ListView)view.findViewById(R.id.listViewWishlist);
         tabLayout = (TabLayout)view.findViewById(R.id.TabLayoutWishlist);

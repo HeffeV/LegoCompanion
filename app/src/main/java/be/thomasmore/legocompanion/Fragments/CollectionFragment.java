@@ -29,9 +29,8 @@ public class CollectionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         Log.d("Fragment:   ","Collection");
-        MainActivity mainActivity = (MainActivity)getActivity();
         view = inflater.inflate(R.layout.fragment_collection, container, false);
-        user=mainActivity.user;
+        user=MainActivity.getUser();
         listView = (ListView)view.findViewById(R.id.listViewCollection);
         tabLayout = (TabLayout)view.findViewById(R.id.TabLayoutCollection);
         SetUpViews();

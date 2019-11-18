@@ -31,19 +31,19 @@
             android:id="@+id/buttonAddWishList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Wishlist" />
+            android:text="Add to wishlist" />
 
         <Button
             android:id="@+id/buttonAddFavorite"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Favorite" />
+            android:text="Add to favorites" />
 
         <Button
             android:id="@+id/buttonAddCollection"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Collection" />
+            android:text="Add to collection" />
 
 
     </LinearLayout>
