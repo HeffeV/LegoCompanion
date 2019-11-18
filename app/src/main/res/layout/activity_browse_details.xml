@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -25,27 +25,45 @@
                     android:id="@+id/imageViewDetails"
                     android:layout_width="250dp"
                     android:layout_height="250dp"
-                    tools:srcCompat="@tools:sample/avatars[2]" />
+                    tools:srcCompat="@tools:sample/avatars[2]"
+                    android:layout_gravity="center"/>
 
-        <Button
-            android:id="@+id/buttonAddWishList"
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Add to wishlist" />
+            android:layout_marginLeft="150px"
+            android:layout_marginRight="150px">
 
-        <Button
-            android:id="@+id/buttonAddFavorite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add to favorites" />
+            <FrameLayout
+                android:id="@+id/fragment_container_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <Button
-            android:id="@+id/buttonAddCollection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add to collection" />
+            <Button
+                android:id="@+id/buttonAddWishList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add to wishlist"
+                android:layout_alignParentBottom="true" />
+
+            <Button
+                android:id="@+id/buttonAddFavorite"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add to favorites"
+                android:layout_above="@id/buttonAddCollection"/>
+
+            <Button
+                android:id="@+id/buttonAddCollection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Add to collection"
+                android:layout_above="@id/buttonAddWishList"/>
+
+        </RelativeLayout>
 
 
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/LegoThemeTitle"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Lego Theme:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/LegoThemeData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@id/LegoCodeTitle"
+        android:layout_toRightOf="@id/LegoCodeTitle"
+        android:text="Technic"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/LegoCodeTitle"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoThemeTitle"
+        android:layout_gravity="center"
+        android:text="Lego Code:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/LegoCodeData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoThemeData"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@id/LegoCodeTitle"
+        android:layout_toRightOf="@id/LegoCodeTitle"
+        android:text="123456"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/LegoPriceTitle"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoCodeTitle"
+        android:layout_gravity="center"
+        android:text="Price:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/LegoPriceData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoCodeData"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@id/LegoPriceTitle"
+        android:layout_toRightOf="@id/LegoPriceTitle"
+        android:text="9.99"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/LegoPartsTitle"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoPriceTitle"
+        android:layout_gravity="center"
+        android:text="Pieces:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/LegoPartsData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoPriceData"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@id/LegoPartsTitle"
+        android:layout_toRightOf="@id/LegoPartsTitle"
+        android:text="4000"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/LegoYearTitle"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoPartsTitle"
+        android:layout_gravity="center"
+        android:text="Year:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/LegoYearData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoPartsData"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@id/LegoYearTitle"
+        android:layout_toRightOf="@id/LegoYearTitle"
+        android:text="2019"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/LegoAgeTitle"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoYearTitle"
+        android:layout_gravity="center"
+        android:text="Age:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/LegoAgeData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoYearData"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@id/LegoAgeTitle"
+        android:layout_toRightOf="@id/LegoAgeTitle"
+        android:text="16"
+        android:textSize="18sp" />
+
+
+</RelativeLayout>

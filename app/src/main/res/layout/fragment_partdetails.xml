@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/LegoCodeTitlePart"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Lego Code:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/LegoCodeDataPart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@id/LegoCodeTitlePart"
+        android:layout_toRightOf="@id/LegoCodeTitlePart"
+        android:text="123456"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/LegoColorTitlePart"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoCodeTitlePart"
+        android:layout_gravity="center"
+        android:text="Color:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/LegoColorDataPart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoCodeDataPart"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@id/LegoCodeTitlePart"
+        android:layout_toRightOf="@id/LegoCodeTitlePart"
+        android:text="Orange"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/LegoPriceTitlePart"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoColorTitlePart"
+        android:layout_gravity="center"
+        android:text="Price:"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/LegoPriceDataPart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LegoColorDataPart"
+        android:layout_gravity="center"
+        android:layout_toEndOf="@id/LegoPriceTitlePart"
+        android:layout_toRightOf="@id/LegoPriceTitlePart"
+        android:text="9.99"
+        android:textSize="18sp" />
+
+</RelativeLayout>

@@ -9,9 +9,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 
+import be.thomasmore.legocompanion.Fragments.PartDetailsFragment;
+import be.thomasmore.legocompanion.Fragments.SetDetailsFragment;
 import be.thomasmore.legocompanion.Models.Part;
 import be.thomasmore.legocompanion.Models.Set;
 import be.thomasmore.legocompanion.Models.User;
@@ -23,10 +28,13 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
     User user;
     String userID;
     Boolean setBool,inWishlist = false,inCollection=false,inFavorites=false;
-    Set set;
-    Part part;
+    private static Set set;
+    private static Part part;
     String itemID;
     Button buttonFavorite,buttonWishlist,buttonCollection;
+    Fragment fragment;
+    FragmentManager fm;
+    FragmentTransaction transaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,6 +138,11 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
                 ImageView imageView = (ImageView)findViewById(R.id.imageViewDetails);
                 Glide.with(BrowseDetailsActivity.this).load(set.getImages().get(0).getImageUrl()).into(imageView);
                 InitializeButtons();
+                fragment = new SetDetailsFragment();
+                fm = getSupportFragmentManager();
+                transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container_detail, fragment);
+                transaction.commit();
             }
         });
         httpReader.execute(getString(R.string.server)+"/api/Set/"+itemID);
@@ -150,6 +163,12 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
                 ImageView imageView = (ImageView)findViewById(R.id.imageViewDetails);
                 Glide.with(BrowseDetailsActivity.this).load(part.getImages().get(0).getImageUrl()).into(imageView);
                 InitializeButtons();
+                fragment = new PartDetailsFragment();
+                fm = getSupportFragmentManager();
+                transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container_detail, fragment);
+                transaction.commit();
+
             }
         });
         httpReader.execute(getString(R.string.server)+"/api/Part/"+itemID);
@@ -331,5 +350,13 @@ public class BrowseDetailsActivity extends AppCompatActivity implements View.OnC
                 }
                 break;
         }
+    }
+
+    public static Set GetSet(){
+        return set;
+    }
+
+    public static Part GetPart(){
+        return part;
     }
 }
