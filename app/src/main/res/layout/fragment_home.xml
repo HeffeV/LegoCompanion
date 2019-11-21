@@ -3,20 +3,11 @@
     android:layout_width="match_parent" android:layout_height="match_parent"
     android:background="@android:color/darker_gray">
 
-    <TextView
-        android:id="@+id/textViewHome"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Last seen items"
-        android:textSize="32sp"
-        android:textStyle="bold" />
     <ListView
         android:id="@+id/listViewHome"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:dividerHeight="1dp"
-        android:layout_below="@id/textViewHome">
+        android:dividerHeight="1dp">
     </ListView>
 
 </RelativeLayout>

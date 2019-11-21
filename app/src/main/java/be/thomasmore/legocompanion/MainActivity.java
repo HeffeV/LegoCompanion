@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawer;
 
     String fragmentName;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         user = new User();
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawer = findViewById(R.id.drawer_layout);
@@ -84,28 +85,34 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         if(fragmentName==null) {
+            getSupportActionBar().setTitle("Home");
             fragment = new HomeFragment();
             navigationView.setCheckedItem(R.id.nav_home);
         }
         else {
             switch (fragmentName) {
                 case "FavoriteFragment":
+                    getSupportActionBar().setTitle("Favorites");
                     fragment = new FavoriteFragment();
                     navigationView.setCheckedItem(R.id.nav_favorite);
                     break;
                 case "WishlistFragment":
+                    getSupportActionBar().setTitle("Wishlist");
                     fragment = new WishlistFragment();
                     navigationView.setCheckedItem(R.id.nav_wishlist);
                     break;
                 case "CollectionFragment":
+                    getSupportActionBar().setTitle("Collection");
                     fragment = new CollectionFragment();
                     navigationView.setCheckedItem(R.id.nav_collection);
                     break;
                 case "BrowseFragment":
+                    getSupportActionBar().setTitle("Browse");
                     fragment = new BrowseFragment();
                     navigationView.setCheckedItem(R.id.nav_search);
                     break;
                 default:
+                    getSupportActionBar().setTitle("Home");
                     fragment = new HomeFragment();
                     navigationView.setCheckedItem(R.id.nav_home);
                     break;
@@ -130,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction transaction;
         switch (menuItem.getItemId()){
             case R.id.nav_home:
+                getSupportActionBar().setTitle("Home");
                 fragment = new HomeFragment();
                 fm = getSupportFragmentManager();
                 transaction = fm.beginTransaction();
@@ -137,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 transaction.commit();
                 break;
             case R.id.nav_search:
+                getSupportActionBar().setTitle("Browse");
                 fragment = new BrowseFragment();
                 fm = getSupportFragmentManager();
                 transaction = fm.beginTransaction();
@@ -144,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 transaction.commit();
                 break;
             case R.id.nav_wishlist:
+                getSupportActionBar().setTitle("Wishlist");
                 fragment = new WishlistFragment();
                 fm = getSupportFragmentManager();
                 transaction = fm.beginTransaction();
@@ -151,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 transaction.commit();
                 break;
             case R.id.nav_favorite:
+                getSupportActionBar().setTitle("Favorites");
                 fragment = new FavoriteFragment();
                 fm = getSupportFragmentManager();
                 transaction = fm.beginTransaction();
@@ -158,6 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 transaction.commit();
                 break;
             case R.id.nav_collection:
+                getSupportActionBar().setTitle("Collection");
                 fragment = new CollectionFragment();
                 fm = getSupportFragmentManager();
                 transaction = fm.beginTransaction();
