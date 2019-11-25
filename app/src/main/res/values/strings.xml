@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">LegoCompanion</string>
     <string name="server_client_id">731083566017-m24ekljaa56f21vsmjgj2at5ies8msf7.apps.googleusercontent.com</string>
+    <string name="server_client_id_dries">817496270157-k29rno8b4at96m04qsg0vri4cml2b8aj.apps.googleusercontent.com</string>
     <string name="title_activity_main">Lego Companion</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

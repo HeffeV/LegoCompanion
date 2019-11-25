@@ -220,6 +220,37 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         httpReader.execute(getString(R.string.server)+"/api/Part/"+itemID);
     }
 
+    private void getSetParts(String itemID){
+        HttpReader httpReader = new HttpReader();
+        httpReader.setOnResultReadyListener(new HttpReader.OnResultReadyListener() {
+            @Override
+            public void resultReady(String result) {
+                JsonHelper jsonHelper = new JsonHelper();
+                part = jsonHelper.getPartData(result);
+
+                getSupportActionBar().setTitle(part.getPartName());
+                //TextView textView = (TextView)findViewById(R.id.textViewDetailsTitle);
+                //textView.setText(part.getPartName());
+
+                ImageView imageView = (ImageView)findViewById(R.id.imageViewDetails);
+                Glide.with(ItemDetailsActivity.this).load(part.getImages().get(0).getImageUrl()).into(imageView);
+
+                InitializeButtons();
+
+                fragment = new PartDetailsFragment();
+                fm = getSupportFragmentManager();
+                transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container_detail, fragment);
+                transaction.commit();
+
+                Item item = new Item(part.getPartID(),1,part.getPartName(),String.valueOf(part.getLegoCode()),part.getImages().get(0).getImageUrl());
+
+                db.AddItem(item);
+            }
+        });
+        httpReader.execute(getString(R.string.server)+"/api/Part/"+itemID);
+    }
+
     private void AddSetToX(String itemID, String userID,int type){
         HttpReader httpReader = new HttpReader();
         httpReader.setOnResultReadyListener(new HttpReader.OnResultReadyListener() {
