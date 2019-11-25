@@ -55,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
                 handleSignInResult(task);
+
             }
         });
     }
