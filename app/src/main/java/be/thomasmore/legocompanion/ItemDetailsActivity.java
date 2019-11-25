@@ -33,7 +33,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
     private static Set set;
     private static Part part;
     String itemID;
-    Button buttonFavorite,buttonWishlist,buttonCollection;
+    Button buttonFavorite,buttonWishlist,buttonCollection,buttonDetails;
     Fragment fragment;
     FragmentManager fm;
     FragmentTransaction transaction;
@@ -54,6 +54,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         buttonFavorite = findViewById(R.id.buttonAddFavorite);
         buttonWishlist = findViewById(R.id.buttonAddWishList);
         buttonCollection = findViewById(R.id.buttonAddCollection);
+        buttonDetails = findViewById(R.id.buttonDetails);
 
         intent = new Intent(ItemDetailsActivity.this, MainActivity.class);
 
@@ -104,8 +105,10 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
        buttonFavorite.setOnClickListener(this);
        buttonCollection.setOnClickListener(this);
        buttonWishlist.setOnClickListener(this);
+       //buttonDetails.setOnClickListener(this);
 
        if(setBool){
+           buttonDetails.setText("Set parts");
            for (int i=0; i<user.getWishlistSets().size(); i++) {
                if(user.getWishlistSets().get(i).getSetID()==set.getSetID()){
                    inWishlist = true;
@@ -124,6 +127,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
        }
        else
        {
+           buttonDetails.setText("Part sets");
            for (int i=0; i<user.getWishlistParts().size(); i++) {
                if(user.getWishlistParts().get(i).getPartID()==part.getPartID()){
                    inWishlist = true;
@@ -389,6 +393,14 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                         buttonCollection.setText("Add to collection");
                         inCollection=false;
                     }
+                }
+                break;
+            case R.id.buttonDetails:
+                if(setBool){
+                    //todo: go to parts in set
+                }
+                else{
+                    //todo: go to sets of part
                 }
                 break;
         }

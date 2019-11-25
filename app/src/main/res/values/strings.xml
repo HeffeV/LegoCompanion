@@ -9,4 +9,7 @@
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="server">https://legocompanion.azurewebsites.net</string>
+    <string name="filterName">Name</string>
+    <string name="filterTheme">Theme</string>
+    <string name="filterPrice">Price</string>
 </resources>

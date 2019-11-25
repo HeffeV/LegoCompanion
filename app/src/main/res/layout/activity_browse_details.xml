@@ -40,6 +40,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
+
+
             <Button
                 android:id="@+id/buttonAddWishList"
                 android:layout_width="match_parent"
@@ -60,6 +62,13 @@
                 android:layout_height="wrap_content"
                 android:text="Add to collection"
                 android:layout_above="@id/buttonAddWishList"/>
+
+            <Button
+                android:id="@+id/buttonDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_above="@+id/buttonAddFavorite" />
 
         </RelativeLayout>
 

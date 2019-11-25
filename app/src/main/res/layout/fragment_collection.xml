@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent" android:layout_height="fill_parent"
     android:fillViewport="true"
-    android:background="@android:color/holo_blue_bright">
+    android:background="@color/colorPrimaryLight">
 
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/TabLayoutCollection"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorPrimary">
+        android:background="@color/colorPrimaryDark">
 
         <com.google.android.material.tabs.TabItem
             android:id="@+id/TabSetsBrowse"
@@ -31,7 +31,9 @@
         android:id="@+id/listViewCollection"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:dividerHeight="1dp"
+        android:layout_margin="15dp"
+        android:dividerHeight="2dp"
+        android:divider="@color/colorPrimary"
         android:layout_below="@id/TabLayoutCollection">
     </ListView>
 
