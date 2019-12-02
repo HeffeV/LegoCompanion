@@ -8,6 +8,7 @@ import java.util.List;
 
 import be.thomasmore.legocompanion.Models.Part;
 import be.thomasmore.legocompanion.Models.Set;
+import be.thomasmore.legocompanion.Models.Theme;
 import be.thomasmore.legocompanion.Models.User;
 
 public class JsonHelper {
@@ -23,6 +24,13 @@ public class JsonHelper {
         Gson gson = new Gson();
         Part[] parts = gson.fromJson(jsonText,Part[].class);
         List<Part> list = new ArrayList<Part>(Arrays.asList(parts));
+        return list;
+    }
+
+    public List<Theme> getThemes(String jsonText){
+        Gson gson = new Gson();
+        Theme[] themes = gson.fromJson(jsonText,Theme[].class);
+        List<Theme> list = new ArrayList<Theme>(Arrays.asList(themes));
         return list;
     }
 

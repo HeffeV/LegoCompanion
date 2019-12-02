@@ -1,6 +1,8 @@
 package be.thomasmore.legocompanion.Fragments;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -23,6 +26,7 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -30,9 +34,11 @@ import java.util.Locale;
 import be.thomasmore.legocompanion.Adapters.CustomPartListAdapter;
 import be.thomasmore.legocompanion.Adapters.CustomSetListAdapter;
 import be.thomasmore.legocompanion.ItemDetailsActivity;
+import be.thomasmore.legocompanion.Listeners.CustomOnItemSelectedListener;
 import be.thomasmore.legocompanion.MainActivity;
 import be.thomasmore.legocompanion.Models.Part;
 import be.thomasmore.legocompanion.Models.Set;
+import be.thomasmore.legocompanion.Models.Theme;
 import be.thomasmore.legocompanion.Models.User;
 import be.thomasmore.legocompanion.Networking.HttpReader;
 import be.thomasmore.legocompanion.Networking.JsonHelper;
@@ -46,10 +52,11 @@ public class BrowseFragment extends Fragment {
     FloatingActionButton fab;
     TabLayout tabLayout;
     User user;
+    Context context;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         Log.d("Fragment:   ","Browse");
         view = inflater.inflate(R.layout.fragment_browse, container, false);
         user=MainActivity.getUser();
@@ -58,6 +65,14 @@ public class BrowseFragment extends Fragment {
         fab = (FloatingActionButton)view.findViewById(R.id.fabFilterBrowse);
         SetUpViews();
         readSets();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFilterDialog();
+            }
+        });
+
         return view;
     }
 
@@ -161,6 +176,41 @@ public class BrowseFragment extends Fragment {
 
     }
 
+    public void readFilteredSets(boolean az, String name, String theme)
+    {
+        HttpReader httpReader = new HttpReader();
+        httpReader.setOnResultReadyListener(new HttpReader.OnResultReadyListener() {
+            @Override
+            public void resultReady(String result) {
+                JsonHelper jsonHelper = new JsonHelper();
+                final List<Set> sets = jsonHelper.getSetsWithDetails(result);
+                ArrayList<Set> Sets = new ArrayList<>();
+                for (int i = 0; i < sets.size(); i++ ) {
+                    Sets.add(sets.get(i));
+                }
+
+                CustomSetListAdapter adapter = new CustomSetListAdapter(getActivity(),R.layout.list_item,Sets);
+
+                listView.setAdapter(adapter);
+
+                //onclicked item in een Intent variable stoppen, doorsturen naar itemdetails activity
+                listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
+                        intent.putExtra("ItemID", Long.toString(sets.get(i).getSetID()));
+                        intent.putExtra("Set", true);
+                        intent.putExtra("FragmentDetails","browse");
+                        //activity openen, (itemdetails)
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
+        httpReader.execute(getString(R.string.server)+"/api/Set/FilterSets?name="+name+"&theme="+theme+"&az="+az);
+
+    }
+
     public ArrayList<String> readThemes()
     {
         final ArrayList<String> Themes = new ArrayList<>();
@@ -169,73 +219,71 @@ public class BrowseFragment extends Fragment {
             @Override
             public void resultReady(String result) {
                 JsonHelper jsonHelper = new JsonHelper();
-                final List<Set> sets = jsonHelper.getSetsWithDetails(result);
-                for (int i = 0; i < sets.size(); i++ ) {
-                    Themes.add(sets.get(i).getTheme());
-                    Log.i("Theme", sets.get(i).getTheme());
+                final List<Theme> themes = jsonHelper.getThemes(result);
+                for (int i = 0; i < themes.size(); i++ ) {
+                    Themes.add(themes.get(i).getThemeName());
+                    Log.i("Theme", themes.get(i).getThemeName());
                 }
             }
         });
-        httpReader.execute(getString(R.string.server)+"/api/Set/GetSets");
+        httpReader.execute(getString(R.string.server)+"/api/Part/GetThemes");
         return Themes;
     }
 
-    private void showFilterDialog() {
+    public void initializeDialogSpinner(final Spinner dropdown){
+//        //get the spinner from the xml.
+//        final Spinner dropdown = (Spinner)v.findViewById(R.id.spinnerDropdownThemes);
+        //create a list of items for the spinner.
+        ArrayList<String> themesList = readThemes();
+        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
+        //There are multiple variations of this, but this is the basic variant.
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, themesList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //set the spinners adapter to the previously created one.
+        dropdown.setAdapter(adapter);
+
+    }
+
+    public void addListenerOnSpinnerItemSelection(Spinner dropdown) {
+        dropdown.setOnItemSelectedListener(new CustomOnItemSelectedListener());
+    }
+
+    public void showFilterDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
         LayoutInflater inflater = this.getLayoutInflater();
 
+
         final View viewInflaterDialog = inflater.inflate(R.layout.dialog_filter, null);
+        final Spinner dropdown = (Spinner)viewInflaterDialog.findViewById(R.id.spinnerDropdownThemes);
+
+        initializeDialogSpinner(dropdown);
+        addListenerOnSpinnerItemSelection(dropdown);
+
         builder.setTitle("Filters:")
                 .setView(viewInflaterDialog)
-                //.setOnKeyListener()
-                //.setOnItemSelectedListener()
+//                .setOnKeyListener()
+//                .setOnItemSelectedListener()
                 .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         final EditText editNaam = (EditText) viewInflaterDialog.findViewById(R.id.naam);
-                        // Capture Text in EditText
-                        editNaam.addTextChangedListener(new TextWatcher() {
+                        Toast.makeText(getActivity().getBaseContext(),"Name: " + editNaam.getText().toString(),Toast.LENGTH_SHORT).show();
 
-                            @Override
-                            public void afterTextChanged(Editable arg0) {
-                                String filterText = editNaam.getText().toString().toLowerCase(Locale.getDefault());
-                                //adapter.filter(filterText);
-                            }
-                            @Override
-                            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-                            }
-                            @Override
-                            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-                            }
-                        });
+                        Toast.makeText(getActivity().getBaseContext(), String.valueOf(dropdown.getSelectedItem()),Toast.LENGTH_SHORT).show();
 
-
-                        //get the spinner from the xml.
-                        Spinner dropdown = (Spinner)view.findViewById(R.id.spinnerDropdownThemes);
-                        //create a list of items for the spinner.
-                        ArrayList<String> items = readThemes();
-                        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
-                        //There are multiple variations of this, but this is the basic variant.
-                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_dropdown_item, items);
-                        //set the spinners adapter to the previously created one.
-                        dropdown.setAdapter(adapter);
-
-                        //Price filter values
-                        EditText editMinPriceFilter = (EditText)view.findViewById(R.id.minPriceFilter);
-                        String minPriceFilter = editMinPriceFilter.getText().toString();
-                        EditText editMaxPriceFilter = (EditText)view.findViewById(R.id.maxPriceFilter);
-                        String maxPriceFilter = editMaxPriceFilter.getText().toString();
-
+                        //dismiss on apply
+                        dialog.dismiss();
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
                     }
                 });
         AlertDialog dialog = builder.create();
         dialog.show();
     }
 
-    public void buttonFilterOnClick(){
-        showFilterDialog();
-    }
+
+
+
 }

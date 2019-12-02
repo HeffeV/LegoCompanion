@@ -45,6 +45,5 @@
         app:srcCompat="@drawable/ic_search"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_margin="20dp"
-        android:onClick="buttonFilterOnClick"/>
+        android:layout_margin="20dp"/>
 </RelativeLayout>
