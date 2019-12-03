@@ -1,5 +1,6 @@
 package be.thomasmore.legocompanion;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -28,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 
+import be.thomasmore.legocompanion.Fragments.AccountFragment;
 import be.thomasmore.legocompanion.Fragments.BrowseFragment;
 import be.thomasmore.legocompanion.Fragments.CollectionFragment;
 import be.thomasmore.legocompanion.Fragments.FavoriteFragment;
@@ -111,6 +113,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     fragment = new BrowseFragment();
                     navigationView.setCheckedItem(R.id.nav_search);
                     break;
+                case "AccountFragment":
+                    getSupportActionBar().setTitle("Account");
+                    fragment = new AccountFragment();
+                    navigationView.setCheckedItem(R.id.nav_search);
+                    break;
                 default:
                     getSupportActionBar().setTitle("Home");
                     fragment = new HomeFragment();
@@ -176,6 +183,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 transaction.replace(R.id.fragment_container, fragment);
                 transaction.commit();
                 break;
+            case R.id.nav_account:
+                getSupportActionBar().setTitle("Account");
+                fragment = new AccountFragment();
+                fm = getSupportFragmentManager();
+                transaction = fm.beginTransaction();
+                transaction.replace(R.id.fragment_container, fragment);
+                transaction.commit();
+                break;
             case R.id.nav_logout:
                 signOut();
                 break;
@@ -217,7 +232,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         Toast.makeText(MainActivity.this,"Signed out",Toast.LENGTH_SHORT).show();
-                        finish();
+                        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                        startActivity(intent);
                     }
                 });
     }

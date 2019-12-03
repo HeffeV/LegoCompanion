@@ -1,24 +1,19 @@
 package be.thomasmore.legocompanion.Fragments;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -26,15 +21,12 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
 
-import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import be.thomasmore.legocompanion.Adapters.CustomPartListAdapter;
 import be.thomasmore.legocompanion.Adapters.CustomSetListAdapter;
 import be.thomasmore.legocompanion.ItemDetailsActivity;
-import be.thomasmore.legocompanion.Listeners.CustomOnItemSelectedListener;
 import be.thomasmore.legocompanion.MainActivity;
 import be.thomasmore.legocompanion.Models.Part;
 import be.thomasmore.legocompanion.Models.Set;
@@ -52,7 +44,9 @@ public class BrowseFragment extends Fragment {
     FloatingActionButton fab;
     TabLayout tabLayout;
     User user;
-    Context context;
+    ArrayList<String> themesList;
+    String filterTheme,filterName;
+    Boolean filterAZ;
 
     @Nullable
     @Override
@@ -63,8 +57,12 @@ public class BrowseFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.listViewBrowse);
         tabLayout = (TabLayout)view.findViewById(R.id.TabLayoutBrowse);
         fab = (FloatingActionButton)view.findViewById(R.id.fabFilterBrowse);
+        themesList = readThemes();
         SetUpViews();
         readSets();
+        filterAZ=false;
+        filterTheme="";
+        filterName="";
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,7 +220,6 @@ public class BrowseFragment extends Fragment {
                 final List<Theme> themes = jsonHelper.getThemes(result);
                 for (int i = 0; i < themes.size(); i++ ) {
                     Themes.add(themes.get(i).getThemeName());
-                    Log.i("Theme", themes.get(i).getThemeName());
                 }
             }
         });
@@ -231,44 +228,44 @@ public class BrowseFragment extends Fragment {
     }
 
     public void initializeDialogSpinner(final Spinner dropdown){
-//        //get the spinner from the xml.
-//        final Spinner dropdown = (Spinner)v.findViewById(R.id.spinnerDropdownThemes);
-        //create a list of items for the spinner.
-        ArrayList<String> themesList = readThemes();
-        //create an adapter to describe how the items are displayed, adapters are used in several places in android.
-        //There are multiple variations of this, but this is the basic variant.
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, themesList);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_item, themesList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //set the spinners adapter to the previously created one.
+
         dropdown.setAdapter(adapter);
 
+        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                filterTheme=themesList.get(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                filterTheme="";
+            }
+        });
     }
 
-    public void addListenerOnSpinnerItemSelection(Spinner dropdown) {
-        dropdown.setOnItemSelectedListener(new CustomOnItemSelectedListener());
-    }
 
     public void showFilterDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
         LayoutInflater inflater = this.getLayoutInflater();
 
-
-        final View viewInflaterDialog = inflater.inflate(R.layout.dialog_filter, null);
+        final View viewInflaterDialog = inflater.inflate(R.layout.dialog_filter, null,false);
         final Spinner dropdown = (Spinner)viewInflaterDialog.findViewById(R.id.spinnerDropdownThemes);
 
         initializeDialogSpinner(dropdown);
-        addListenerOnSpinnerItemSelection(dropdown);
 
         builder.setTitle("Filters:")
                 .setView(viewInflaterDialog)
-//                .setOnKeyListener()
-//                .setOnItemSelectedListener()
                 .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        final EditText editNaam = (EditText) viewInflaterDialog.findViewById(R.id.naam);
-                        Toast.makeText(getActivity().getBaseContext(),"Name: " + editNaam.getText().toString(),Toast.LENGTH_SHORT).show();
+                        EditText editNaam = (EditText) viewInflaterDialog.findViewById(R.id.naam);
+                        filterName = editNaam.getText().toString();
 
-                        Toast.makeText(getActivity().getBaseContext(), String.valueOf(dropdown.getSelectedItem()),Toast.LENGTH_SHORT).show();
+                        filterAZ = ((CheckBox)viewInflaterDialog.findViewById(R.id.checkbox)).isChecked();
+
+                        readFilteredSets(filterAZ,filterName,filterTheme);
 
                         //dismiss on apply
                         dialog.dismiss();
