@@ -3,6 +3,7 @@ package be.thomasmore.legocompanion;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -105,10 +106,10 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
        buttonFavorite.setOnClickListener(this);
        buttonCollection.setOnClickListener(this);
        buttonWishlist.setOnClickListener(this);
-       //buttonDetails.setOnClickListener(this);
+       buttonDetails.setOnClickListener(this);
 
        if(setBool){
-           buttonDetails.setText("Set parts");
+           buttonDetails.setText("Parts of set");
            for (int i=0; i<user.getWishlistSets().size(); i++) {
                if(user.getWishlistSets().get(i).getSetID()==set.getSetID()){
                    inWishlist = true;
@@ -127,7 +128,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
        }
        else
        {
-           buttonDetails.setText("Part sets");
+           buttonDetails.setText("Sets with this part");
            for (int i=0; i<user.getWishlistParts().size(); i++) {
                if(user.getWishlistParts().get(i).getPartID()==part.getPartID()){
                    inWishlist = true;
@@ -248,7 +249,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                 db.AddItem(item);
             }
         });
-        httpReader.execute(getString(R.string.server)+"/api/Part/"+itemID);
+        httpReader.execute(getString(R.string.server)+"/api/Set/SetParts"+itemID);
     }
 
     private void AddSetToX(String itemID, String userID,int type){
@@ -427,11 +428,18 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                 }
                 break;
             case R.id.buttonDetails:
+                Intent intent = new Intent(getApplication(), ItemDetailsDetailsActivity.class);
+                intent.putExtra("ItemID", itemID);
+
                 if(setBool){
                     //todo: go to parts in set
+                    intent.putExtra("Set", true);
+                    startActivity(intent);
                 }
                 else{
                     //todo: go to sets of part
+                    intent.putExtra("Set", false);
+                    startActivity(intent);
                 }
                 break;
         }
