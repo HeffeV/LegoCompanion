@@ -432,13 +432,11 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
                 intent.putExtra("ItemID", itemID);
 
                 if(setBool){
-                    //todo: go to parts in set
-                    intent.putExtra("Set", true);
+                    intent.putExtra("Set", true); //setBool == true
                     startActivity(intent);
                 }
                 else{
-                    //todo: go to sets of part
-                    intent.putExtra("Set", false);
+                    intent.putExtra("Set", false); //setBool == false
                     startActivity(intent);
                 }
                 break;

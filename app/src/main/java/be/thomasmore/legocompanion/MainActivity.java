@@ -3,6 +3,7 @@ package be.thomasmore.legocompanion;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,7 +41,6 @@ import be.thomasmore.legocompanion.Networking.HttpReader;
 import be.thomasmore.legocompanion.Networking.JsonHelper;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
     private static User user;
 
     GoogleSignInClient mGoogleSignInClient;
