@@ -45,8 +45,6 @@ public class SetDetailsFragment extends Fragment {
         text = view.findViewById(R.id.LegoYearData);
         text.setText(Integer.toString(set.getReleaseYear()));
 
-
-
         return view;
     }
 

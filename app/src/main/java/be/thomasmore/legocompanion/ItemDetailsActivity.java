@@ -3,7 +3,6 @@ package be.thomasmore.legocompanion;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -68,26 +67,28 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch(fragmentName){
-                    case "favorite":
-                        intent.putExtra("Fragment", "FavoriteFragment");
-                        startActivity(intent);
-                        break;
-                    case "wishlist":
-                        intent.putExtra("Fragment", "WishlistFragment");
-                        startActivity(intent);
-                        break;
-                    case "collection":
-                        intent.putExtra("Fragment", "CollectionFragment");
-                        startActivity(intent);
-                        break;
-                    case "browse":
-                        intent.putExtra("Fragment", "BrowseFragment");
-                        startActivity(intent);
-                        break;
-                    default:
-                        startActivity(intent);
-                        break;
+                if(fragmentName!=null){
+                    switch(fragmentName){
+                        case "favorite":
+                            intent.putExtra("Fragment", "FavoriteFragment");
+                            startActivity(intent);
+                            break;
+                        case "wishlist":
+                            intent.putExtra("Fragment", "WishlistFragment");
+                            startActivity(intent);
+                            break;
+                        case "collection":
+                            intent.putExtra("Fragment", "CollectionFragment");
+                            startActivity(intent);
+                            break;
+                        case "browse":
+                            intent.putExtra("Fragment", "BrowseFragment");
+                            startActivity(intent);
+                            break;
+                        default:
+                            startActivity(intent);
+                            break;
+                    }
                 }
             }
         });
@@ -430,6 +431,7 @@ public class ItemDetailsActivity extends AppCompatActivity implements View.OnCli
             case R.id.buttonDetails:
                 Intent intent = new Intent(getApplication(), ItemDetailsDetailsActivity.class);
                 intent.putExtra("ItemID", itemID);
+                intent.putExtra("FragmentDetails", fragmentName);
 
                 if(setBool){
                     intent.putExtra("Set", true); //setBool == true

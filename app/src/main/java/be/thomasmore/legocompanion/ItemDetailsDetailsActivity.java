@@ -2,32 +2,17 @@ package be.thomasmore.legocompanion;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
-import com.bumptech.glide.Glide;
-import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import be.thomasmore.legocompanion.Adapters.CustomPartListAdapter;
 import be.thomasmore.legocompanion.Adapters.CustomSetListAdapter;
-import be.thomasmore.legocompanion.Fragments.PartDetailsFragment;
-import be.thomasmore.legocompanion.Fragments.SetDetailsFragment;
 import be.thomasmore.legocompanion.Models.DatabaseHelper;
-import be.thomasmore.legocompanion.Models.Item;
 import be.thomasmore.legocompanion.Models.Part;
 import be.thomasmore.legocompanion.Models.Set;
 import be.thomasmore.legocompanion.Models.User;
@@ -55,39 +40,29 @@ public class ItemDetailsDetailsActivity extends AppCompatActivity{
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        intent = new Intent(ItemDetailsDetailsActivity.this, MainActivity.class);
+        intent = new Intent(ItemDetailsDetailsActivity.this, ItemDetailsActivity.class);
 
         user = MainActivity.getUser();
 
         itemID = getIntent().getStringExtra("ItemID");
         setBool = getIntent().getBooleanExtra("Set",true);
+        fragmentName = getIntent().getStringExtra("FragmentDetails");
 
-//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                switch(fragmentName){
-//                    case "favorite":
-//                        intent.putExtra("Fragment", "FavoriteFragment");
-//                        startActivity(intent);
-//                        break;
-//                    case "wishlist":
-//                        intent.putExtra("Fragment", "WishlistFragment");
-//                        startActivity(intent);
-//                        break;
-//                    case "collection":
-//                        intent.putExtra("Fragment", "CollectionFragment");
-//                        startActivity(intent);
-//                        break;
-//                    case "browse":
-//                        intent.putExtra("Fragment", "BrowseFragment");
-//                        startActivity(intent);
-//                        break;
-//                    default:
-//                        startActivity(intent);
-//                        break;
-//                }
-//            }
-//        });
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                intent.putExtra("ItemID", itemID);
+                intent.putExtra("FragmentDetails", fragmentName);
+                if(setBool){
+                    intent.putExtra("Set", true); //setBool == true
+                }
+                else{
+                    intent.putExtra("Set", false); //setBool == false
+                }
+                startActivity(intent);
+            }
+        });
 
         if(setBool){
             readSetParts();
