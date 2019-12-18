@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ import be.thomasmore.legocompanion.Models.User;
 import be.thomasmore.legocompanion.Networking.HttpReader;
 import be.thomasmore.legocompanion.Networking.JsonHelper;
 
-public class ItemDetailsDetailsActivity extends AppCompatActivity {
+public class ItemDetailsDetailsActivity extends AppCompatActivity{
     private static User user;
 
     String itemID;
@@ -61,32 +62,32 @@ public class ItemDetailsDetailsActivity extends AppCompatActivity {
         itemID = getIntent().getStringExtra("ItemID");
         setBool = getIntent().getBooleanExtra("Set",true);
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                switch(fragmentName){
-                    case "favorite":
-                        intent.putExtra("Fragment", "FavoriteFragment");
-                        startActivity(intent);
-                        break;
-                    case "wishlist":
-                        intent.putExtra("Fragment", "WishlistFragment");
-                        startActivity(intent);
-                        break;
-                    case "collection":
-                        intent.putExtra("Fragment", "CollectionFragment");
-                        startActivity(intent);
-                        break;
-                    case "browse":
-                        intent.putExtra("Fragment", "BrowseFragment");
-                        startActivity(intent);
-                        break;
-                    default:
-                        startActivity(intent);
-                        break;
-                }
-            }
-        });
+//        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                switch(fragmentName){
+//                    case "favorite":
+//                        intent.putExtra("Fragment", "FavoriteFragment");
+//                        startActivity(intent);
+//                        break;
+//                    case "wishlist":
+//                        intent.putExtra("Fragment", "WishlistFragment");
+//                        startActivity(intent);
+//                        break;
+//                    case "collection":
+//                        intent.putExtra("Fragment", "CollectionFragment");
+//                        startActivity(intent);
+//                        break;
+//                    case "browse":
+//                        intent.putExtra("Fragment", "BrowseFragment");
+//                        startActivity(intent);
+//                        break;
+//                    default:
+//                        startActivity(intent);
+//                        break;
+//                }
+//            }
+//        });
 
         if(setBool){
             readSetParts();

@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FragmentTransaction transaction;
 
 
-        if(fragmentName==null) {
+        if(fragmentName.equals(null) || fragmentName.equals("")) {
             getSupportActionBar().setTitle("Home");
             fragment = new HomeFragment();
             navigationView.setCheckedItem(R.id.nav_home);
