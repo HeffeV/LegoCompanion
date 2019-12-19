@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private void signOut() {
+    public void signOut() {
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
@@ -237,7 +237,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 });
     }
 
-    private void GetUserData(String id,String email){
+    public void GetUserData(String id,String email){
         final JsonHelper jsonHelper = new JsonHelper();
 
         HttpReader httpReader= new HttpReader();
