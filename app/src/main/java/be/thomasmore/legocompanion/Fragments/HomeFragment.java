@@ -1,10 +1,12 @@
 package be.thomasmore.legocompanion.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import androidx.annotation.Nullable;
@@ -15,6 +17,7 @@ import java.util.Collections;
 import java.util.List;
 
 import be.thomasmore.legocompanion.Adapters.CustomHomeListAdapter;
+import be.thomasmore.legocompanion.ItemDetailsActivity;
 import be.thomasmore.legocompanion.Models.DatabaseHelper;
 import be.thomasmore.legocompanion.Models.Item;
 import be.thomasmore.legocompanion.R;
@@ -49,6 +52,23 @@ public class HomeFragment extends Fragment {
         CustomHomeListAdapter adapter = new CustomHomeListAdapter(getActivity(),R.layout.list_item,items);
 
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getActivity(), ItemDetailsActivity.class);
+                intent.putExtra("ItemID", Long.toString(items.get(i).getItemID()));
+                if(items.get(i).getSetOrPart()==0){
+                    intent.putExtra("Set", true);
+                }
+                else{
+                    intent.putExtra("Set", false);
+                }
+                intent.putExtra("FragmentDetails","home");
+                //activity openen, (itemdetails)
+                startActivity(intent);
+            }
+        });
 
     }
 

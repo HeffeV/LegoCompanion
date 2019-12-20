@@ -117,26 +117,4 @@
         android:layout_below="@+id/aboutTitle">
     </TextView>
 
-    <Button
-        android:id="@+id/buttonDelete"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_button"
-        android:text="Delete account"
-        android:layout_alignParentBottom="true"
-        android:layout_marginLeft="50sp"
-        android:layout_marginRight="50sp"
-        android:layout_marginBottom="5sp"
-        />
-
-    <Button
-        android:id="@+id/buttonLogOut"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/rounded_button"
-        android:text="Log out"
-        android:layout_above="@+id/buttonDelete"
-        android:layout_marginLeft="50sp"
-        android:layout_marginRight="50sp"
-        android:layout_marginBottom="5sp"/>
 </RelativeLayout>

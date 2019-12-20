@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 case "AccountFragment":
                     getSupportActionBar().setTitle("Account");
                     fragment = new AccountFragment();
-                    navigationView.setCheckedItem(R.id.nav_search);
+                    navigationView.setCheckedItem(R.id.nav_account);
                     break;
                 default:
                     getSupportActionBar().setTitle("Home");
