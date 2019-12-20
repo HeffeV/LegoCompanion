@@ -13,4 +13,5 @@
     <string name="filterName">Name</string>
     <string name="filterTheme">Theme</string>
     <string name="filterPrice">Price</string>
+    <string name="about">LegoCompanion is an app made by 2 ITF-APP students named Jeff Vandenbroeck en Dries Luyten. The app is created to make an overview of your personal lego collection or wishlist as a collector or an enthousiast.</string>
 </resources>

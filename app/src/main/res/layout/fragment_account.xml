@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/colorPrimaryLight"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/colorPrimaryRed"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".MainActivity">
 
     <ImageView
         android:id="@+id/legoman"
@@ -16,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textSize="30sp"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorPrimaryLight"
         android:layout_marginBottom="10sp"
         android:layout_marginTop="10sp"
         android:layout_below="@+id/legoman">
@@ -28,12 +30,25 @@
         android:textSize="20sp"
         android:text="test test test test"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorPrimaryLight"
         android:layout_marginBottom="30sp"
         android:layout_below="@+id/accountName">
     </TextView>
 
-
+    <TextView
+        android:id="@+id/itemsTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="15sp"
+        android:text="My Items"
+        android:textColor="@color/colorPrimaryLight"
+        android:layout_marginTop="15sp"
+        android:layout_marginLeft="50sp"
+        android:layout_marginRight="50sp"
+        android:layout_above="@+id/wishlistCount"
+        android:textStyle="bold">
+    </TextView>
     <TextView
         android:id="@+id/wishlistCount"
         android:layout_width="wrap_content"
@@ -41,41 +56,78 @@
         android:layout_centerHorizontal="true"
         android:textSize="15sp"
         android:text="test test test test"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/colorPrimaryLight"
         android:layout_marginBottom="15sp"
-        android:layout_marginTop="10sp"
+        android:layout_marginTop="5sp"
         android:layout_marginLeft="50sp"
         android:layout_marginRight="50sp"
         android:layout_below="@+id/accountEmail">
     </TextView>
 
     <TextView
-        android:id="@+id/collectionCount"
+    android:id="@+id/collectionCount"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true"
+    android:textSize="15sp"
+    android:text="test test test test"
+    android:textColor="@color/colorPrimaryLight"
+    android:layout_marginBottom="15sp"
+    android:layout_marginTop="10sp"
+    android:layout_marginLeft="50sp"
+    android:layout_marginRight="50sp"
+    android:layout_below="@+id/wishlistCount">
+    </TextView>
+
+    <TextView
+        android:id="@+id/aboutTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:textSize="15sp"
-        android:text="test test test test"
-        android:textColor="@color/colorPrimaryDark"
-        android:layout_marginBottom="15sp"
-        android:layout_marginTop="10sp"
+        android:text="About"
+        android:textColor="@color/colorPrimaryLight"
+        android:layout_marginTop="15sp"
         android:layout_marginLeft="50sp"
         android:layout_marginRight="50sp"
-        android:layout_below="@+id/wishlistCount">
+        android:layout_below="@+id/collectionCount"
+        android:textStyle="bold">
+    </TextView>
+    <TextView
+        android:id="@+id/about"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:textSize="15sp"
+        android:text="@string/about"
+        android:textColor="@color/colorPrimaryLight"
+        android:layout_marginBottom="15sp"
+        android:layout_marginTop="5sp"
+        android:layout_marginLeft="50sp"
+        android:layout_marginRight="50sp"
+        android:layout_below="@+id/aboutTitle">
     </TextView>
 
     <Button
         android:id="@+id/buttonDelete"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button"
         android:text="Delete account"
         android:layout_alignParentBottom="true"
+        android:layout_marginLeft="50sp"
+        android:layout_marginRight="50sp"
+        android:layout_marginBottom="5sp"
         />
 
     <Button
         android:id="@+id/buttonLogOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/rounded_button"
         android:text="Log out"
-        android:layout_above="@+id/buttonDelete"/>
+        android:layout_above="@+id/buttonDelete"
+        android:layout_marginLeft="50sp"
+        android:layout_marginRight="50sp"
+        android:layout_marginBottom="5sp"/>
 </RelativeLayout>
